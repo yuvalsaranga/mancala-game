@@ -93,18 +93,15 @@ class Environment:
             self.state.board[index] = 0 #ריקון הגומה שבה נחתה האבן
             self.state.board[matchIndex] = 0 #ריקון הגומה המקבילה כי האבנים שלה נלקחו לבית של השחקן
 
+    #בודקת אם המהלך חוקי
     def isLegal(self, action):
         if action is None:
             return False
-
-        # אסור לבחור בתים
-        if action == 6 or action == 13:
+        # אסור לבחור בתים או גומה ריקה
+        if action == 6 or action == 13 or self.state.board[action] == 0:
             return False
-        # תור שחקן 1 – מותר רק 0-5 ורק אם יש אבנים
+        # בדיקה לפי שחקן
         if self.state.player == 1:
-            return 0 <= action <= 5 and self.state.board[action] > 0
-        # תור שחקן 2 – מותר רק 7-12 ורק אם יש אבנים
-        if self.state.player == 2:
-            return 7 <= action <= 12 and self.state.board[action] > 0
-
-        return False
+            return action <= 5
+        else:
+            return action >= 7
